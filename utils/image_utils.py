@@ -9,7 +9,24 @@ import io
 import base64
 from PIL import Image
 from google import genai
-from utils.genai_utils import get_client
+from dotenv import load_dotenv
+
+load_dotenv()
+
+_gemini_client = None
+
+
+def _get_gemini_client():
+    """Singleton Google Gemini client (separate from the Cerebras client in genai_utils)."""
+    global _gemini_client
+    if _gemini_client is None:
+        api_key = os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            raise ValueError(
+                "Please set your GOOGLE_API_KEY in the .env file for image generation"
+            )
+        _gemini_client = genai.Client(api_key=api_key)
+    return _gemini_client
 
 
 IMAGE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "generated_images")
@@ -27,7 +44,7 @@ def generate_visual(topic):
     """
     ensure_image_dir()
 
-    client = get_client()
+    client = _get_gemini_client()
 
     prompt = f"""Generate a clean, professional educational diagram or infographic about "{topic}" in machine learning.
 

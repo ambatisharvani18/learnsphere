@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block title %}Learn{% endblock %}
+
+{% block body %}
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-layout">
+    <!-- ═══ Sidebar ═══ -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo">🧠</div>
+            <div class="brand-text">
+                <h2>LearnSphere</h2>
+                <span>AI Learning Tutor</span>
+            </div>
+        </div>
+
+        <div class="sidebar-profile">
+            <div class="user-info">
+                <div class="avatar">{{ user.display_name[0] | upper }}</div>
+                <div>
+                    <div class="user-name">{{ user.display_name }}</div>
+                    <!-- Removed XP, Badges, and Stats per requirements -->
+
+                    <div class="sidebar-nav">
+                        <div class="nav-section-title">Navigation</div>
+                        <a href="/dashboard" class="nav-item">
+                            <span class="nav-icon">🏠</span> Dashboard
+                        </a>
+                        <div class="nav-item active" onclick="goToSection('level')">
+                            <span class="nav-icon">🚀</span> Learning
+                        </div>
+
+                        <div id="sidebarRoadmap">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </div>
+
+                    <!-- Footer Removed -->
+    </nav>
+
+    <!-- ═══ Main Content ═══ -->
+    <main class="main-content">
+        <div class="topbar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <div class="topbar-title">
+                    <h1 id="pageTitle">Choose Your Level</h1>
+                    <p id="pageSubtitle">Select your ML experience to get started</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar-container" id="progressBar"></div>
+
+        <!-- ═══ LEVEL SELECT ═══ -->
+        <div class="learn-section active" id="section-level">
+            <div class="page-header">
+                <span class="badge-label">📍 Step 1</span>
+                <h2>What's your ML experience?</h2>
+                <p>We'll customize your learning roadmap based on your level</p>
+            </div>
+            <div class="level-grid">
+                <div class="level-card card-3d" onclick="selectLevel('Beginner')" id="level-Beginner">
+                    <span class="level-icon">🌱</span>
+                    <div class="level-name">Beginner</div>
+                    <div class="level-desc">New to ML. I want to start from the very basics.</div>
+                </div>
+                <div class="level-card card-3d" onclick="selectLevel('Intermediate')" id="level-Intermediate">
+                    <span class="level-icon">🌿</span>
+                    <div class="level-name">Intermediate</div>
+                    <div class="level-desc">I know the fundamentals and want to go deeper.</div>
+                </div>
+                <div class="level-card card-3d" onclick="selectLevel('Advanced')" id="level-Advanced">
+                    <span class="level-icon">🌳</span>
+                    <div class="level-name">Advanced</div>
+                    <div class="level-desc">I'm experienced and want to master cutting-edge topics.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ ROADMAP ═══ -->
+        <div class="learn-section" id="section-roadmap">
+            <div class="page-header">
+                <span class="badge-label" id="roadmapBadge">📍 BEGINNER TRACK</span>
+                <h2>Your ML Learning Roadmap</h2>
+                <p>Click any topic to start learning</p>
+            </div>
+            <div id="completedTopics"></div>
+            <div class="topic-list" id="topicList">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="btn-row" style="justify-content:center; margin-top:24px;">
+                <button class="btn btn-secondary" onclick="goToSection('level')">← Change Level</button>
+            </div>
+        </div>
+
+        <!-- ═══ STYLE SELECT ═══ -->
+        <div class="learn-section" id="section-style">
+            <div class="page-header">
+                <span class="badge-label" id="styleBadge">📚 Topic Name</span>
+                <h2>How would you like to learn?</h2>
+                <p>Choose the learning style that works best for you</p>
+            </div>
+            <div class="style-grid">
+                <div class="style-card card-3d" onclick="selectStyle('Reading')">
+                    <span class="style-icon">📖</span>
+                    <div class="style-name">Reading</div>
+                    <div class="style-desc">In-depth articles, explanations, and written guides</div>
+                </div>
+                <div class="style-card card-3d" onclick="selectStyle('Auditory')">
+                    <span class="style-icon">🎧</span>
+                    <div class="style-name">Auditory</div>
+                    <div class="style-desc">Listen to podcast-style audio lessons</div>
+                </div>
+                <div class="style-card card-3d" onclick="selectStyle('Kinesthetic')">
+                    <span class="style-icon">💻</span>
+                    <div class="style-name">Kinesthetic</div>
+                    <div class="style-desc">Hands-on coding examples and practice problems</div>
+                </div>
+                <div class="style-card card-3d" onclick="selectStyle('Visual')">
+                    <span class="style-icon">🎨</span>
+                    <div class="style-name">Visual</div>
+                    <div class="style-desc">AI-generated diagrams, infographics, and visuals</div>
+                </div>
+            </div>
+            <div class="btn-row" style="justify-content:center;">
+                <button class="btn btn-secondary" onclick="goToSection('roadmap')">← Back to Roadmap</button>
+            </div>
+        </div>
+
+        <!-- ═══ CONTENT ═══ -->
+        <div class="learn-section" id="section-content">
+            <div class="content-header">
+                <div class="content-header-icon" id="contentIcon">📖</div>
+                <div class="content-header-text">
+                    <h2 id="contentTitle">Topic</h2>
+                    <p id="contentSubtitle">Reading Mode · Beginner Level</p>
+                </div>
+            </div>
+            <div class="btn-row" style="justify-content:space-between; margin-bottom: 16px;">
+                <button class="btn btn-secondary btn-sm" onclick="goToSection('style')">← Change Style</button>
+                <button class="btn btn-primary btn-sm" onclick="startQuiz()">📝 Take Quiz →</button>
+            </div>
+            <div id="contentLoader" class="spinner-container" style="display:none;">
+                <div class="spinner"></div>
+                <div class="spinner-text">Generating your personalized content...</div>
+            </div>
+            <div class="content-area" id="contentArea"></div>
+            <div id="audioPlayerContainer" style="display:none;">
+                <h3 style="margin:16px 0 8px;">🎧 Audio Lesson</h3>
+                <audio id="audioPlayer" controls class="audio-player"></audio>
+            </div>
+            <div id="videoContainer" style="display:none;"></div>
+            <div class="btn-row"
+                style="justify-content:center; margin-top:24px; position: sticky; bottom: 0; background: rgba(15,23,42,0.9); padding: 15px; border-radius: 12px; z-index: 10; border-top: 1px solid rgba(255,255,255,0.1);">
+                <button class="btn btn-secondary" onclick="goToSection('style')">← Back</button>
+                <button class="btn btn-primary" onclick="startQuiz()">📝 Take Quiz →</button>
+            </div>
+        </div>
+
+        <!-- ═══ QUIZ ═══ -->
+        <div class="learn-section" id="section-quiz">
+            <div class="content-header">
+                <div class="content-header-icon">📝</div>
+                <div class="content-header-text">
+                    <h2 id="quizTitle">Quiz</h2>
+                    <p>3 questions · Scenario, Code Analysis, and MCQ</p>
+                </div>
+            </div>
+            <div id="quizLoader" class="spinner-container" style="display:none;">
+                <div class="spinner"></div>
+                <div class="spinner-text">Preparing your quiz...</div>
+            </div>
+            <div class="quiz-container" id="quizContainer"></div>
+            <div class="btn-row" style="justify-content:center;" id="quizActions" style="display:none;">
+                <button class="btn btn-secondary" onclick="goToSection('content')">← Back to Content</button>
+                <button class="btn btn-green btn-lg" onclick="submitQuiz()">✅ Submit Answers</button>
+            </div>
+        </div>
+
+        <!-- ═══ FEEDBACK ═══ -->
+        <div class="learn-section" id="section-feedback">
+            <div class="btn-row" style="justify-content:space-between; margin-bottom: 16px; width: 100%;">
+                <button class="btn btn-secondary btn-sm" onclick="goToSection('roadmap')">🗺️ Back to Roadmap</button>
+                <button class="btn btn-primary btn-sm" style="background:var(--accent-green);color:#0a0a1a;"
+                    onclick="goToNextTopic()">Next Topic ➡️</button>
+            </div>
+            <div id="feedbackLoader" class="spinner-container" style="display:none;">
+                <div class="spinner"></div>
+                <div class="spinner-text">Evaluating your answers...</div>
+            </div>
+            <div id="feedbackContent"></div>
+            <div class="btn-row"
+                style="justify-content:center; flex-wrap:wrap; position: sticky; bottom: 0; background: rgba(15,23,42,0.9); padding: 15px; border-radius: 12px; z-index: 10; border-top: 1px solid rgba(255,255,255,0.1);"
+                id="feedbackActions">
+                <button class="btn btn-secondary" onclick="startRevision()">📖 Revision</button>
+                <button class="btn btn-secondary" onclick="startFlashcards()">🃏 Flashcards</button>
+                <button class="btn btn-primary" style="background:var(--accent-green);color:#0a0a1a;"
+                    onclick="goToNextTopic()">Next Topic ➡️</button>
+            </div>
+        </div>
+
+        <!-- ═══ REVISION ═══ -->
+        <div class="learn-section" id="section-revision">
+            <div class="content-header">
+                <div class="content-header-icon">🔄</div>
+                <div class="content-header-text">
+                    <h2 id="revisionTitle">Revision</h2>
+                    <p>Targeted material for your weak areas</p>
+                </div>
+            </div>
+            <div id="revisionLoader" class="spinner-container" style="display:none;">
+                <div class="spinner"></div>
+                <div class="spinner-text">Generating targeted revision material...</div>
+            </div>
+            <div class="content-area" id="revisionArea"></div>
+            <div class="btn-row" style="justify-content:center;">
+                <button class="btn btn-secondary" onclick="goToSection('roadmap')">🗺️ Back to Roadmap</button>
+                <button class="btn btn-primary" onclick="retakeQuiz()">📝 Retake Quiz</button>
+            </div>
+        </div>
+
+        <!-- ═══ FLASHCARDS ═══ -->
+        <div class="learn-section" id="section-flashcards">
+            <div class="content-header">
+                <div class="content-header-icon">🃏</div>
+                <div class="content-header-text">
+                    <h2 id="flashcardsTitle">Flashcards</h2>
+                    <p>Click each card to flip and reveal the answer</p>
+                </div>
+            </div>
+            <div id="flashcardsLoader" class="spinner-container" style="display:none;">
+                <div class="spinner"></div>
+                <div class="spinner-text">Creating flashcards...</div>
+            </div>
+            <div class="flashcard-grid" id="flashcardGrid"></div>
+            <div class="btn-row" style="justify-content:center;">
+                <button class="btn btn-secondary" onclick="goToSection('roadmap')">🗺️ Back to Roadmap</button>
+                <button class="btn btn-primary" onclick="startFlashcards()">🔄 New Set</button>
+            </div>
+        </div>
+
+        <!-- ═══ GYANGURU CHAT ═══ -->
+        <div class="chat-panel" id="chatPanel" style="display:none;">
+            <div class="chat-header">
+                <div>
+                    <div class="title">🧠 GyanGuru</div>
+                    <div class="subtitle">Your Personal AI Tutor</div>
+                </div>
+                <button class="btn btn-sm" style="background:rgba(255,255,255,0.2);color:white;border:none;"
+                    onclick="toggleChat()">✕</button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div style="padding:8px 12px; display:flex; gap:6px; flex-wrap:wrap;" id="chatModes">
+                <button class="btn btn-sm btn-primary" data-mode="text" onclick="setChatMode('text')">💬</button>
+                <button class="btn btn-sm btn-secondary" data-mode="flow" onclick="setChatMode('flow')">🔀</button>
+                <button class="btn btn-sm btn-secondary" data-mode="image" onclick="setChatMode('image')">🖼️</button>
+                <button class="btn btn-sm btn-secondary" data-mode="audio" onclick="setChatMode('audio')">🔊</button>
+                <button class="btn btn-sm btn-secondary" data-mode="video" onclick="setChatMode('video')">🎥</button>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Ask anything..."
+                    onkeydown="if(event.key==='Enter')sendChat()">
+                <button class="btn btn-primary btn-sm" onclick="sendChat()">🚀</button>
+            </div>
+        </div>
+
+        <!-- Chat Toggle FAB -->
+        <button class="btn btn-primary" id="chatFab" onclick="toggleChat()"
+            style="position:fixed;bottom:30px;right:30px;border-radius:50%;width:56px;height:56px;padding:0;font-size:1.5rem;box-shadow:0 4px 20px rgba(79,195,247,0.4);z-index:50;">
+            🧠
+        </button>
+
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Pass server data to JS
+    window.APP_DATA = {
+        progress: JSON.parse('{{ progress | tojson | safe }}'),
+        level: "{{ progress.level if progress and progress.level else 'null' }}",
+        roadmap: JSON.parse('{{ (progress.current_roadmap | tojson | safe) if progress and progress.current_roadmap else "null" }}'),
+        topicsCompleted: JSON.parse('{{ (progress.topics_completed | tojson | safe) if progress and progress.topics_completed else "[]" }}'),
+        xp: parseInt('{{ progress.xp if progress else 0 }}', 10),
+        badges: JSON.parse('{{ (progress.badges | tojson | safe) if progress and progress.badges else "[]" }}')
+    };
+</script>
+<script src="/static/js/app.js"></script>
+{% endblock %}

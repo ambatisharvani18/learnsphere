@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to LearnSphere{% endblock %}
+
+{% block head %}
+<style>
+    /* Reset some base body margins and overflow for splash */
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background-color: #0f172a;
+        /* dark slate background fallback */
+    }
+
+    .splash-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        cursor: pointer;
+        perspective: 1200px;
+    }
+
+    .title-3d-wrapper {
+        /* Creating a wrapping container for the transform to apply properly */
+        transform-style: preserve-3d;
+        animation: floatAndRotate 6s ease-in-out infinite;
+    }
+
+    .title-3d {
+        font-size: 7rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        color: #f1f5f9;
+        letter-spacing: 5px;
+        margin: 0;
+        /* 3D text effect using shadows */
+        text-shadow:
+            1px 1px 0 #cbd5e1,
+            2px 2px 0 #94a3b8,
+            3px 3px 0 #64748b,
+            4px 4px 0 #475569,
+            5px 5px 0 #334155,
+            6px 6px 0 #1e293b,
+            7px 7px 1px rgba(0, 0, 0, 0.1),
+            0 0 5px rgba(0, 0, 0, 0.1),
+            2px 2px 3px rgba(0, 0, 0, 0.3),
+            4px 4px 5px rgba(0, 0, 0, 0.2),
+            6px 6px 10px rgba(0, 0, 0, 0.25),
+            8px 8px 10px rgba(0, 0, 0, 0.2),
+            10px 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .subtitle-press {
+        margin-top: 4rem;
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px 30px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        animation: pulse 2s infinite;
+        letter-spacing: 2px;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        /* Bring subtitle to the front slightly to look good with 3D background */
+        transform: translateZ(50px);
+    }
+
+    @keyframes floatAndRotate {
+        0% {
+            transform: translateY(0px) rotateX(15deg) rotateY(-10deg);
+        }
+
+        50% {
+            transform: translateY(-30px) rotateX(-5deg) rotateY(10deg);
+        }
+
+        100% {
+            transform: translateY(0px) rotateX(15deg) rotateY(-10deg);
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            opacity: 0.5;
+            box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+        }
+
+        50% {
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        100% {
+            opacity: 0.5;
+            box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+        }
+    }
+
+    /* Base fade transition for navigating away */
+    body {
+        transition: opacity 0.4s ease;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="splash-container" id="splash-screen">
+    <div class="title-3d-wrapper">
+        <h1 class="title-3d">LearnSphere</h1>
+    </div>
+    <div class="subtitle-press">Press ENTER to Start</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function goToDashboard() {
+        document.body.style.opacity = "0";
+        setTimeout(() => {
+            window.location.href = "{{ url_for('dashboard') }}";
+        }, 400);
+    }
+
+    // Listen for Enter key
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            goToDashboard();
+        }
+    });
+
+    // Also support clicking anywhere on the splash container
+    document.getElementById("splash-screen").addEventListener("click", goToDashboard);
+</script>
+{% endblock %}

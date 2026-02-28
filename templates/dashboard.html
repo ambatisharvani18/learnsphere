@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<style>
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.show {
+        display: flex;
+        opacity: 1;
+    }
+
+    .modal-content {
+        min-width: 350px;
+        max-width: 500px;
+        transform: scale(0.9);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.show .modal-content {
+        transform: scale(1);
+    }
+</style>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-layout">
+    <!-- ═══ Sidebar ═══ -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo">🧠</div>
+            <div class="brand-text">
+                <h2>LearnSphere</h2>
+                <span>AI Learning Tutor</span>
+            </div>
+        </div>
+
+        <!-- User Profile -->
+        <div class="sidebar-profile">
+            <div class="user-info">
+                <div class="avatar" id="userAvatar">{{ user.display_name[0] | upper }}</div>
+                <div>
+                    <div class="user-name" id="userName">{{ user.display_name }}</div>
+                    <!-- Removed XP, Badges, and Stats per requirements -->
+
+                    <!-- Navigation -->
+                    <div class="sidebar-nav">
+                        <div class="nav-section-title">Navigation</div>
+                        <a href="/dashboard" class="nav-item active">
+                            <span class="nav-icon">🏠</span> Dashboard
+                        </a>
+                        <a href="/learn" class="nav-item">
+                            <span class="nav-icon">🚀</span> Start Learning
+                        </a>
+
+                        {% if progress and progress.current_roadmap %}
+                        <div class="nav-section-title">Course Roadmap</div>
+                        {% for topic in progress.current_roadmap %}
+                        <div class="nav-item {% if topic.title in progress.topics_completed %}completed{% endif %}"
+                            onclick="window.location='/learn?topic={{ topic.id }}'">
+                            <span class="nav-icon">{{ topic.icon }}</span>
+                            <span>{{ topic.title[:22] }}{% if topic.title|length > 22 %}…{% endif %}</span>
+                            {% if topic.title in progress.topics_completed %}
+                            <span class="nav-badge" style="background: var(--accent-green); color: #0a0a1a;">✓</span>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Footer Removed -->
+    </nav>
+
+    <!-- ═══ Main Content ═══ -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="topbar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <div class="topbar-title">
+                    <h1>Welcome back, {{ user.display_name }}! 👋</h1>
+                    <p>Ready to continue your ML journey?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Removed -->
+
+        <!-- CTA -->
+        <div class="glass-card card-3d" style="text-align:center; padding:40px; margin-top:32px;">
+            <div style="font-size:3rem; margin-bottom:16px;">🚀</div>
+            <h2
+                style="font-size:1.5rem; font-weight:800; background:var(--gradient-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px;">
+                {% if progress and progress.level %}Continue Learning{% else %}Start Your ML Journey{% endif %}
+            </h2>
+            <p style="color:var(--text-muted); margin-bottom:24px;">
+                {% if progress and progress.level %}
+                You're on the {{ progress.level }} track. Pick up where you left off!
+                {% else %}
+                Choose your experience level and get a personalized ML roadmap.
+                {% endif %}
+            </p>
+            <a href="/learn" class="btn btn-primary btn-lg">
+                {% if progress and progress.level %}📚 Continue Learning{% else %}🚀 Get Started{% endif %}
+            </a>
+        </div>
+
+        <!-- Features -->
+        <div class="features-grid" style="margin-top:32px;">
+            <div class="feature-card card-3d" onclick="window.location='/learn'">
+                <span class="feature-icon">📖</span>
+                <div class="feature-title">Reading</div>
+                <div class="feature-desc">In-depth articles & explanations</div>
+            </div>
+            <div class="feature-card card-3d" onclick="window.location='/learn'">
+                <span class="feature-icon">🎧</span>
+                <div class="feature-title">Auditory</div>
+                <div class="feature-desc">Podcast-style audio lessons</div>
+            </div>
+            <div class="feature-card card-3d" onclick="window.location='/learn'">
+                <span class="feature-icon">💻</span>
+                <div class="feature-title">Kinesthetic</div>
+                <div class="feature-desc">Hands-on code & problems</div>
+            </div>
+            <div class="feature-card card-3d" onclick="window.location='/learn'">
+                <span class="feature-icon">🎨</span>
+                <div class="feature-title">Visual</div>
+                <div class="feature-desc">AI-generated diagrams & visuals</div>
+            </div>
+        </div>
+
+        <!-- Learning History -->
+        {% if history %}
+        <div class="history-section" style="margin-top:32px;">
+            <h3 class="section-title">📜 Learning History</h3>
+            <div class="history-list">
+                {% for h in history %}
+                <div class="history-item">
+                    <div>
+                        <div class="history-topic">{{ h.topic }}</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">{{ h.learning_style or 'Quiz' }} · {{
+                            h.timestamp[:10] }}</div>
+                    </div>
+                    {% if h.quiz_score is not none %}
+                    <div class="history-meta">
+                        <span class="history-score">{{ h.quiz_score }}/{{ h.quiz_total }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+</div>
+
+<!-- Topics Modal -->
+<div id="topicsModal" class="modal-overlay" onclick="closeTopicsModal(event)">
+    <div class="glass-card modal-content card-3d" onclick="event.stopPropagation()">
+        <h3
+            style="margin-bottom: 16px; font-weight: 800; font-size: 1.5rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            Topics Completed</h3>
+        {% if progress and progress.topics_completed %}
+        <ul style="list-style-type: none; margin-bottom: 24px;">
+            {% for t in progress.topics_completed %}
+            <li
+                style="padding: 10px 16px; background: var(--bg-glass); border-radius: var(--radius-sm); margin-bottom: 8px; border: 1px solid var(--glass-border); color: var(--text-primary);">
+                <span style="color: var(--accent-green); margin-right: 8px;">✓</span> {{ t }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p style="color: var(--text-muted); margin-bottom: 24px; text-align: center; padding: 20px;">No topics completed
+            yet. Start learning to earn progress!</p>
+        {% endif %}
+        <button class="btn btn-secondary btn-block"
+            onclick="document.getElementById('topicsModal').classList.remove('show')">Close</button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('sidebarOverlay').classList.toggle('show');
+    }
+
+    function openTopicsModal() {
+        document.getElementById('topicsModal').classList.add('show');
+    }
+
+    function closeTopicsModal(e) {
+        if (e.target.id === 'topicsModal') {
+            document.getElementById('topicsModal').classList.remove('show');
+        }
+    }
+</script>
+{% endblock %}
