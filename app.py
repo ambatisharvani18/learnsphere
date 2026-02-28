@@ -469,57 +469,33 @@ def inject_css():
     .stRadio > div { gap: 8px !important; }
     .stRadio label span { font-family: 'Nunito', sans-serif !important; }
 
-    /* ═══════ FLOATING CHAT ═══════ */
-    .floating-chat-btn {
-        position: fixed;
-        bottom: 28px;
-        right: 28px;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #87CEEB, #93C572);
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 1.6rem;
+    /* ═══════ GYANGURU SIDE PANEL ═══════ */
+    .gg-side-panel {
+        border-left: 2.5px solid rgba(108,52,131,0.15);
+        padding-left: 8px;
+        animation: gg-panel-slide 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    @keyframes gg-panel-slide {
+        from { opacity: 0; transform: translateX(30px); }
+        to   { opacity: 1; transform: translateX(0); }
+    }
+    .gg-panel-header {
+        background: linear-gradient(135deg, #6C3483, #2980B9);
+        padding: 14px 16px;
+        border-radius: 14px 14px 0 0;
         display: flex;
         align-items: center;
-        justify-content: center;
-        box-shadow: 0 6px 20px rgba(135,206,235,0.4);
-        z-index: 9999;
-        transition: all 0.3s ease;
-        animation: float 3s ease-in-out infinite;
+        justify-content: space-between;
     }
-    .floating-chat-btn:hover {
-        transform: scale(1.1);
-        box-shadow: 0 8px 28px rgba(135,206,235,0.5);
-    }
-    .chat-container {
-        background: white;
-        border: 2px solid #E0F7FA;
-        border-radius: 20px;
-        padding: 20px;
-        margin-top: 16px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-    }
-    .chat-message-user {
-        background: linear-gradient(135deg, #87CEEB, #93C572);
+    .gg-panel-header .title { color: white; font-weight: 800; font-size: 1.05rem; }
+    .gg-panel-header .subtitle { color: rgba(255,255,255,0.7); font-size: 0.7rem; }
+    .gg-panel-header .level-badge {
+        background: rgba(255,255,255,0.2);
+        padding: 3px 10px;
+        border-radius: 10px;
+        font-size: 0.7rem;
         color: white;
-        padding: 10px 16px;
-        border-radius: 18px 18px 4px 18px;
-        margin-bottom: 8px;
-        max-width: 85%;
-        margin-left: auto;
-        font-size: 0.9rem;
-    }
-    .chat-message-ai {
-        background: #fff5f5;
-        color: #2d3436;
-        padding: 10px 16px;
-        border-radius: 18px 18px 18px 4px;
-        margin-bottom: 8px;
-        max-width: 85%;
-        font-size: 0.9rem;
+        font-weight: 700;
     }
 
     /* ═══════ GAMIFICATION ═══════ */
@@ -637,6 +613,98 @@ def inject_css():
         font-family: 'Nunito', sans-serif !important;
         font-weight: 700 !important;
     }
+
+
+
+    /* ═══════ MINI PROJECTS ═══════ */
+    .mini-project-card {
+        background: white;
+        border: 2px solid #E0F7FA;
+        border-radius: 20px;
+        padding: 22px 18px;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        position: relative;
+        overflow: hidden;
+    }
+    .mini-project-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #87CEEB, #93C572, #6C3483);
+    }
+    .mini-project-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(135,206,235,0.15);
+        border-color: #87CEEB;
+    }
+    .mini-project-icon { font-size: 2.2rem; margin-bottom: 10px; }
+    .mini-project-title {
+        font-weight: 800;
+        color: #2d3436;
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+    }
+    .mini-project-desc {
+        font-size: 0.78rem;
+        color: #636e72;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+    .mini-project-tag {
+        display: inline-block;
+        background: linear-gradient(135deg, rgba(135,206,235,0.15), rgba(147,197,114,0.15));
+        border: 1px solid rgba(135,206,235,0.3);
+        border-radius: 50px;
+        padding: 3px 10px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #6C3483;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Concept Flow Visualization */
+    .cf-header {
+        background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        border-radius: 20px;
+        padding: 32px;
+        text-align: center;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+    }
+    .cf-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 30% 50%, rgba(108,52,131,0.4) 0%, transparent 60%),
+                    radial-gradient(ellipse at 70% 50%, rgba(41,128,185,0.4) 0%, transparent 60%);
+    }
+    .cf-title {
+        font-size: 2rem;
+        font-weight: 900;
+        color: white;
+        position: relative;
+        margin-bottom: 8px;
+    }
+    .cf-subtitle {
+        color: rgba(255,255,255,0.75);
+        font-size: 0.95rem;
+        position: relative;
+    }
+    .cf-content {
+        background: white;
+        border-radius: 16px;
+        padding: 28px;
+        border: 2px solid rgba(108,52,131,0.1);
+        box-shadow: 0 4px 20px rgba(108,52,131,0.06);
+        font-family: 'Fira Code', monospace;
+        font-size: 0.88rem;
+        line-height: 1.7;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -658,12 +726,22 @@ def init_session_state():
         "projects": None,
         "topics_completed": [],
         "loading": False,
+        # legacy
         "chat_messages": [],
         "show_doubt_chat": False,
         "xp": 0,
         "badges": [],
         "flashcards": None,
         "flipped_cards": set(),
+        # GyanGuru chatbot
+        "gg_open": False,
+        "gg_messages": [],          # persistent session history
+        "gg_level": None,           # user's selected level inside chatbot
+        "gg_mode": "text",          # text | image | audio | video | flow
+        "gg_thinking": False,
+        # Concept Flow
+        "cf_topic": None,
+        "cf_content": None,
     }
     for key, val in defaults.items():
         if key not in st.session_state:
@@ -914,6 +992,148 @@ def page_roadmap():
             if st.button("🚀  Get Project Suggestions", use_container_width=True):
                 navigate("projects")
                 st.rerun()
+
+    # ─────────────────── MINI PROJECTS SECTION ───────────────────────
+    st.markdown("""<br>""", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="roadmap-header">
+        <div class="roadmap-badge">🛠️ HANDS-ON PRACTICE</div>
+        <div class="roadmap-title">Mini Projects</div>
+        <div style="color:#636e72;font-size:0.9rem;margin-top:4px;">Apply what you learn with these bite-sized projects</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    mini_projects = {
+        "Beginner": [
+            {
+                "icon": "📊", "title": "Data Explorer",
+                "desc": "Load a CSV dataset, compute basic statistics, and visualize distributions.",
+                "tags": "Pandas · Matplotlib",
+                "explanation": "This project teaches you the foundation of any ML workflow — understanding your data. You'll load real-world datasets, compute summary statistics (mean, median, mode, standard deviation), handle missing values, and create visualizations like histograms, box plots, and scatter matrices to uncover patterns before building any model.",
+                "tools": ["Python 3.8+", "Pandas", "Matplotlib", "Seaborn", "Jupyter Notebook"],
+                "concepts": ["Data loading & cleaning", "Descriptive statistics", "Data visualization", "Handling missing values", "Exploratory Data Analysis (EDA)"],
+            },
+            {
+                "icon": "🏠", "title": "House Price Predictor",
+                "desc": "Build a linear regression model to predict house prices from features.",
+                "tags": "Scikit-learn · NumPy",
+                "explanation": "Your first predictive model! You'll use the classic Boston/Ames Housing dataset to understand how features like square footage, number of rooms, and location affect price. You'll learn to split data into train/test sets, fit a linear regression, evaluate it with R² and RMSE, and visualize predicted vs actual values.",
+                "tools": ["Python 3.8+", "Scikit-learn", "NumPy", "Pandas", "Matplotlib"],
+                "concepts": ["Linear Regression", "Train-Test Split", "Feature selection", "Mean Squared Error (MSE)", "R² Score", "Model evaluation"],
+            },
+            {
+                "icon": "🌸", "title": "Iris Classifier",
+                "desc": "Train a KNN classifier on the Iris dataset with decision boundary visualization.",
+                "tags": "KNN · Seaborn",
+                "explanation": "A classic ML project! You'll classify iris flowers into 3 species based on petal and sepal measurements. You'll experiment with different K values, understand how the distance metric affects predictions, and create beautiful 2D decision boundary plots to see exactly how your classifier divides the feature space.",
+                "tools": ["Python 3.8+", "Scikit-learn", "Seaborn", "Matplotlib", "NumPy"],
+                "concepts": ["K-Nearest Neighbors (KNN)", "Classification", "Decision boundaries", "Cross-validation", "Hyperparameter tuning (K value)", "Confusion matrix"],
+            },
+            {
+                "icon": "📧", "title": "Spam Detector",
+                "desc": "Create a Naive Bayes text classifier to detect spam emails.",
+                "tags": "NLP · Naive Bayes",
+                "explanation": "Enter the world of Natural Language Processing! You'll preprocess email text (tokenization, removing stop words, TF-IDF vectorization), train a Naive Bayes classifier, and build a working spam filter. You'll learn how probabilistic models handle text data and evaluate your model with precision, recall, and F1-score.",
+                "tools": ["Python 3.8+", "Scikit-learn", "NLTK or spaCy", "Pandas", "Matplotlib"],
+                "concepts": ["Text preprocessing", "TF-IDF Vectorization", "Naive Bayes Theorem", "Precision & Recall", "F1-Score", "Bag of Words"],
+            },
+        ],
+        "Intermediate": [
+            {
+                "icon": "🖼️", "title": "Image Classifier",
+                "desc": "Build a CNN to classify CIFAR-10 images with augmentation and dropout.",
+                "tags": "TensorFlow · CNN",
+                "explanation": "Dive into deep learning by building a Convolutional Neural Network from scratch! You'll work with the CIFAR-10 dataset (60,000 images across 10 classes), implement convolutional and pooling layers, apply data augmentation (rotation, flipping, zoom) to prevent overfitting, and use dropout regularization to build a robust classifier.",
+                "tools": ["Python 3.8+", "TensorFlow / Keras", "NumPy", "Matplotlib", "GPU (recommended)"],
+                "concepts": ["Convolutional Neural Networks (CNN)", "Convolution & Pooling layers", "Data Augmentation", "Dropout Regularization", "Batch Normalization", "Learning rate scheduling"],
+            },
+            {
+                "icon": "💬", "title": "Sentiment Analyzer",
+                "desc": "Fine-tune a pre-trained model for movie review sentiment classification.",
+                "tags": "Transformers · NLP",
+                "explanation": "Learn transfer learning for NLP! You'll take a pre-trained transformer model (like BERT or DistilBERT), fine-tune it on the IMDB movie reviews dataset, and build a sentiment classifier that understands context, sarcasm, and nuance far better than traditional approaches. You'll learn tokenization, attention mechanisms, and evaluation.",
+                "tools": ["Python 3.8+", "Hugging Face Transformers", "PyTorch or TensorFlow", "Datasets library", "GPU (recommended)"],
+                "concepts": ["Transfer Learning", "Transformer Architecture", "Attention Mechanism", "Fine-tuning", "Tokenization (WordPiece/BPE)", "Pre-trained Language Models"],
+            },
+            {
+                "icon": "📈", "title": "Stock Price Forecaster",
+                "desc": "Use an LSTM network to predict stock prices from time-series data.",
+                "tags": "LSTM · Keras",
+                "explanation": "Apply deep learning to finance! You'll fetch real stock price data, create sliding window sequences, normalize features, and train an LSTM (Long Short-Term Memory) network that captures temporal patterns. You'll learn about vanishing gradients, why LSTMs solve them, and how to evaluate time-series predictions properly.",
+                "tools": ["Python 3.8+", "Keras / TensorFlow", "yfinance", "Pandas", "Matplotlib", "Scikit-learn"],
+                "concepts": ["Recurrent Neural Networks (RNN)", "LSTM cells & gates", "Time-series forecasting", "Sequence-to-sequence learning", "Feature normalization", "Sliding window approach"],
+            },
+            {
+                "icon": "🎵", "title": "Music Genre Classifier",
+                "desc": "Extract audio features and train an SVM to classify songs by genre.",
+                "tags": "Librosa · SVM",
+                "explanation": "Combine signal processing with ML! You'll load audio files, extract features like MFCCs (Mel-frequency cepstral coefficients), spectral centroid, and chroma features using Librosa. Then train a Support Vector Machine with different kernels (linear, RBF) to classify songs into genres like rock, jazz, classical, and hip-hop.",
+                "tools": ["Python 3.8+", "Librosa", "Scikit-learn", "NumPy", "Matplotlib", "SoundFile"],
+                "concepts": ["Audio signal processing", "MFCCs & spectral features", "Support Vector Machines (SVM)", "Kernel trick (RBF, linear)", "Feature extraction", "Multi-class classification"],
+            },
+        ],
+        "Advanced": [
+            {
+                "icon": "🤖", "title": "Chatbot with RAG",
+                "desc": "Build a retrieval-augmented generation chatbot for your own documents.",
+                "tags": "LangChain · FAISS",
+                "explanation": "Build a production-grade AI chatbot! You'll chunk and embed documents using sentence transformers, store embeddings in a FAISS vector database, and implement retrieval-augmented generation where the LLM answers questions grounded in your actual documents — reducing hallucinations. You'll learn embedding models, similarity search, prompt engineering, and chain orchestration.",
+                "tools": ["Python 3.8+", "LangChain", "FAISS", "OpenAI / Gemini API", "Sentence-Transformers", "Streamlit (for UI)"],
+                "concepts": ["Retrieval-Augmented Generation (RAG)", "Vector embeddings", "Similarity search (cosine/L2)", "Prompt engineering", "Document chunking strategies", "LLM orchestration"],
+            },
+            {
+                "icon": "🎨", "title": "Style Transfer App",
+                "desc": "Apply artistic styles to photos using neural style transfer with VGG.",
+                "tags": "PyTorch · VGG19",
+                "explanation": "Create art with AI! You'll implement Gatys et al.'s neural style transfer algorithm — extracting content features from one image and style features (Gram matrices) from another, then optimizing a generated image to match both. You'll understand how different CNN layers capture different levels of abstraction, from edges to textures to objects.",
+                "tools": ["Python 3.8+", "PyTorch", "torchvision (VGG19)", "PIL/Pillow", "Matplotlib", "GPU (required)"],
+                "concepts": ["Neural Style Transfer", "Content & Style loss functions", "Gram matrices", "Feature extraction from CNN layers", "Optimization-based image generation", "VGG architecture"],
+            },
+            {
+                "icon": "🔍", "title": "Object Detection API",
+                "desc": "Train YOLOv8 on custom data and deploy as a real-time REST API.",
+                "tags": "YOLO · FastAPI",
+                "explanation": "End-to-end MLOps! You'll annotate a custom dataset, train a YOLOv8 model for real-time object detection, evaluate it with mAP (mean Average Precision), and deploy it as a REST API using FastAPI. You'll handle image uploads, run inference, return bounding box predictions as JSON, and learn about model serving best practices.",
+                "tools": ["Python 3.8+", "Ultralytics YOLOv8", "FastAPI", "Uvicorn", "LabelImg (annotation)", "Docker (optional)"],
+                "concepts": ["Object Detection (YOLO architecture)", "Anchor boxes & NMS", "mAP evaluation metric", "Model deployment & serving", "REST API design", "Real-time inference optimization"],
+            },
+            {
+                "icon": "🧬", "title": "GAN Image Generator",
+                "desc": "Build a DCGAN to generate realistic images with latent space exploration.",
+                "tags": "GAN · PyTorch",
+                "explanation": "Master generative AI! You'll implement a Deep Convolutional GAN with a Generator and Discriminator competing in a minimax game. Train on face datasets to generate realistic portraits, experiment with latent space interpolation (morphing between faces), and understand mode collapse, training instability, and techniques to stabilize GAN training.",
+                "tools": ["Python 3.8+", "PyTorch", "torchvision", "Matplotlib", "NumPy", "GPU (required)"],
+                "concepts": ["Generative Adversarial Networks", "Generator & Discriminator", "Minimax loss function", "Transposed convolutions", "Latent space interpolation", "Mode collapse & training tricks"],
+            },
+        ],
+    }
+
+    projects = mini_projects.get(level, mini_projects["Beginner"])
+
+    # Render project cards in a 2-column grid
+    for row_start in range(0, len(projects), 2):
+        cols = st.columns(2)
+        for col_idx, proj_idx in enumerate(range(row_start, min(row_start + 2, len(projects)))):
+            p = projects[proj_idx]
+            with cols[col_idx]:
+                st.markdown(f"""
+                <div class="mini-project-card">
+                    <div class="mini-project-icon">{p['icon']}</div>
+                    <div class="mini-project-title">{p['title']}</div>
+                    <div class="mini-project-desc">{p['desc']}</div>
+                    <div class="mini-project-tag">{p['tags']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                with st.expander(f"📖 Details — {p['title']}"):
+                    st.markdown(f"**💡 What You'll Build:**\n\n{p['explanation']}")
+                    st.markdown("---")
+                    st.markdown("**🔧 Tools Required:**")
+                    for tool in p["tools"]:
+                        st.markdown(f"- `{tool}`")
+                    st.markdown("---")
+                    st.markdown("**🧠 Concepts You'll Learn:**")
+                    for concept in p["concepts"]:
+                        st.markdown(f"- {concept}")
 
 
 # ─────────────────── STYLE SELECT ───────────────────────
@@ -1407,9 +1627,295 @@ def page_flashcards():
         st.toast("🃏 +15 XP for reviewing flashcards!")
 
 
-# ═══════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════
+#                 CONCEPT FLOW VISUALIZATION PAGE
+# ════════════════════════════════════════════════════════
+
+def page_concept_flow():
+    """Full-page concept flow visualization."""
+    topic = st.session_state.cf_topic
+    level = st.session_state.level or "Beginner"
+
+    st.markdown(f"""
+    <div class="cf-header">
+        <div class="cf-title">🔀 Concept Flow Visualization</div>
+        <div class="cf-subtitle">
+            {'Visualizing: <strong>' + topic + '</strong>' if topic else 'Enter a topic below to visualize its concept flow'}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Topic input
+    col1, col2, col3 = st.columns([3, 1, 1])
+    with col1:
+        new_topic = st.text_input(
+            "Enter an ML topic:",
+            value=topic or "",
+            placeholder="e.g. Gradient Descent, Random Forest, Neural Networks...",
+            key="cf_topic_input",
+            label_visibility="collapsed"
+        )
+    with col2:
+        lvl_opts = ["Beginner", "Intermediate", "Advanced"]
+        cf_level = st.selectbox("Level", lvl_opts,
+                                index=lvl_opts.index(level) if level in lvl_opts else 0,
+                                key="cf_level_select",
+                                label_visibility="collapsed")
+    with col3:
+        gen_btn = st.button("🔀 Visualize", use_container_width=True, type="primary")
+
+    # Quick topic suggestions
+    st.markdown("**Quick topics:**")
+    quick_topics = ["Linear Regression", "Neural Networks", "Decision Trees",
+                    "Gradient Descent", "Random Forest", "K-Means Clustering",
+                    "Backpropagation", "Attention Mechanism", "SVM"]
+    q_cols = st.columns(len(quick_topics))
+    for i, qt in enumerate(quick_topics):
+        with q_cols[i]:
+            if st.button(qt, key=f"qt_{i}", use_container_width=True):
+                st.session_state.cf_topic = qt
+                st.session_state.cf_content = None
+                st.rerun()
+
+    st.divider()
+
+    if gen_btn and new_topic.strip():
+        st.session_state.cf_topic = new_topic.strip()
+        st.session_state.cf_content = None
+        st.rerun()
+
+    if st.session_state.cf_topic:
+        if st.session_state.cf_content is None:
+            with st.spinner(f"🔀 Generating concept flow for '{st.session_state.cf_topic}'..."):
+                from utils.genai_utils import generate_concept_flow
+                st.session_state.cf_content = generate_concept_flow(
+                    st.session_state.cf_topic, cf_level
+                )
+
+        # Display the concept flow
+        st.markdown(f"""
+        <div class="cf-content">
+        """, unsafe_allow_html=True)
+        st.markdown(st.session_state.cf_content)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.divider()
+        col_a, col_b, col_c = st.columns(3)
+        with col_a:
+            if st.button("🔄 Regenerate", use_container_width=True):
+                st.session_state.cf_content = None
+                st.rerun()
+        with col_b:
+            if st.button("🗸 Generate Diagram", use_container_width=True):
+                with st.spinner("🗸 Creating visual diagram..."):
+                    import os
+                    from utils.image_utils import generate_visual
+                    img_path, desc = generate_visual(st.session_state.cf_topic)
+                    if img_path and os.path.exists(img_path):
+                        st.image(img_path, caption=f"🗸 {st.session_state.cf_topic} — Concept Diagram", use_container_width=True)
+                        if desc:
+                            st.caption(desc)
+                    else:
+                        st.warning(desc or "Image generation failed.")
+        with col_c:
+            if st.button("🗣️ Listen to Explanation", use_container_width=True):
+                with st.spinner("🗣️ Generating audio..."):
+                    from utils.genai_utils import generate_audio_script
+                    from utils.audio_utils import generate_audio
+                    script = generate_audio_script(st.session_state.cf_topic, cf_level)
+                    audio_path = generate_audio(script, st.session_state.cf_topic)
+                    if os.path.exists(audio_path):
+                        st.audio(audio_path, format="audio/mp3")
+                        st.caption("🎧 Audio explanation generated!")
+    else:
+        st.info("💡 Enter any ML topic above to see its complete concept flow visualization — how ideas connect, prerequisites, pipeline steps, and key parameters.")
+
+    st.divider()
+    if st.button("← Back to Roadmap"):
+        navigate("roadmap")
+        st.rerun()
+
+
+# ════════════════════════════════════════════════════════
+#                 GYANGURU FLOATING CHATBOT
+# ════════════════════════════════════════════════════════
+
+def render_gyanguru_panel():
+    """
+    Render the GyanGuru chatbot as an inline side-panel (copilot style).
+    Called inside a st.column context — no floating CSS needed.
+    """
+    eff_level = st.session_state.gg_level or st.session_state.level or None
+    level_emoji = {"Beginner": "🌱", "Intermediate": "🌿", "Advanced": "🌳"}.get(eff_level, "🧠")
+    level_label = eff_level or "Auto-detect"
+    context_topic = st.session_state.selected_topic_title
+
+    # ── Panel header (uses side-panel CSS) ──
+    st.markdown(f"""
+    <div class="gg-panel-header">
+        <div>
+            <div class="title">🧠 GyanGuru</div>
+            <div class="subtitle">Your Personal AI Tutor</div>
+        </div>
+        <div class="level-badge">{level_emoji} {level_label}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Welcome message on first open ──
+    if not st.session_state.gg_messages:
+        greeting = """👋 **Namaste! I'm GyanGuru!**
+
+Ask me anything — academics, science, math, coding, ML, general knowledge & more!"""
+        st.session_state.gg_messages.append({"role": "assistant", "content": greeting, "media": None})
+
+    # ── Messages ──
+    msg_container = st.container(height=350)
+    with msg_container:
+        for msg in st.session_state.gg_messages:
+            role = msg["role"]
+            content = msg.get("content", "")
+            if role == "user":
+                st.markdown(f"**👤 You:** {content}")
+            else:
+                st.markdown(f"**🧠 GyanGuru:**")
+                st.markdown(content)
+            st.markdown("---")
+
+    # ── Mode selector (compact) ──
+    mode_cols = st.columns(5)
+    modes = [
+        ("text", "💬"), ("flow", "🔀"), ("image", "🖼️"), ("audio", "🔊"), ("video", "🎥"),
+    ]
+    for i, (mode_key, mode_icon) in enumerate(modes):
+        with mode_cols[i]:
+            is_active = st.session_state.gg_mode == mode_key
+            if st.button(mode_icon, key=f"gg_mode_{mode_key}",
+                         use_container_width=True,
+                         type="primary" if is_active else "secondary",
+                         help=mode_key.capitalize()):
+                st.session_state.gg_mode = mode_key
+                st.rerun()
+
+    # ── Suggestion chips ──
+    if st.session_state.gg_messages:
+        last_bot = next((m for m in reversed(st.session_state.gg_messages)
+                         if m["role"] == "assistant" and m.get("suggestions")), None)
+        if last_bot and last_bot.get("suggestions"):
+            for i, sug in enumerate(last_bot["suggestions"][:2]):
+                label = f"💡 {sug[:35]}.." if len(sug) > 35 else f"💡 {sug}"
+                if st.button(label, key=f"gg_sug_{i}_{len(st.session_state.gg_messages)}",
+                             use_container_width=True):
+                    st.session_state["gg_prefill"] = sug
+                    st.rerun()
+
+    # ── Input ──
+    prefill = st.session_state.pop("gg_prefill", "") if "gg_prefill" in st.session_state else ""
+    question = st.text_input(
+        "Ask anything:",
+        value=prefill,
+        key="gg_input",
+        placeholder="Type your question...",
+        label_visibility="collapsed"
+    )
+    c1, c2 = st.columns([4, 1])
+    with c1:
+        send_btn = st.button("🚀 Ask", key="gg_send", use_container_width=True, type="primary")
+    with c2:
+        if st.button("🗑️", key="gg_clear", use_container_width=True, help="Clear chat"):
+            st.session_state.gg_messages = []
+            st.rerun()
+
+    # ── Process question ──
+    if send_btn and question.strip():
+        q = question.strip()
+        st.session_state.gg_messages.append({"role": "user", "content": q, "media": None})
+        current_level = eff_level
+        mode = st.session_state.gg_mode
+
+        with st.spinner("🧠 Thinking..."):
+            if mode == "text":
+                from utils.genai_utils import answer_ml_chatbot
+                result = answer_ml_chatbot(
+                    q, level=current_level, context_topic=context_topic,
+                    chat_history=st.session_state.gg_messages[:-1]
+                )
+                st.session_state.gg_messages.append({
+                    "role": "assistant", "content": result["text"],
+                    "suggestions": result.get("suggestions", []), "media": None
+                })
+
+            elif mode == "flow":
+                from utils.genai_utils import generate_concept_flow_for_chat
+                lvl = current_level or "Beginner"
+                topic_name, flow_content = generate_concept_flow_for_chat(q, lvl)
+                st.session_state.gg_messages.append({
+                    "role": "assistant",
+                    "content": f"🔀 **Concept Flow: {topic_name}**\n\n" + flow_content,
+                    "media": None
+                })
+                st.session_state.cf_topic = topic_name
+                st.session_state.cf_content = flow_content
+
+            elif mode == "image":
+                from utils.genai_utils import answer_ml_chatbot
+                from utils.image_utils import generate_visual
+                result = answer_ml_chatbot(q, level=current_level, context_topic=context_topic)
+                img_path, img_desc = generate_visual(q)
+                media_data = {"type": "image", "path": img_path, "desc": img_desc} if img_path else None
+                st.session_state.gg_messages.append({
+                    "role": "assistant", "content": result["text"],
+                    "suggestions": result.get("suggestions", []), "media": media_data
+                })
+
+            elif mode == "audio":
+                from utils.genai_utils import answer_ml_chatbot, generate_audio_script
+                from utils.audio_utils import generate_audio
+                result = answer_ml_chatbot(q, level=current_level, context_topic=context_topic)
+                script = generate_audio_script(q, current_level or "Beginner")
+                audio_path = generate_audio(script, q)
+                media_data = {"type": "audio", "path": audio_path}
+                st.session_state.gg_messages.append({
+                    "role": "assistant", "content": result["text"],
+                    "suggestions": result.get("suggestions", []), "media": media_data
+                })
+
+            elif mode == "video":
+                from utils.genai_utils import answer_ml_chatbot
+                from utils.video_utils import search_youtube_videos
+                result = answer_ml_chatbot(q, level=current_level, context_topic=context_topic)
+                videos = search_youtube_videos(q, max_results=3)
+                media_data = {"type": "video", "videos": videos}
+                st.session_state.gg_messages.append({
+                    "role": "assistant", "content": result["text"],
+                    "suggestions": result.get("suggestions", []), "media": media_data
+                })
+
+        st.rerun()
+
+    # ── Render media for latest bot message ──
+    latest_bot_with_media = next(
+        (m for m in reversed(st.session_state.gg_messages)
+         if m["role"] == "assistant" and m.get("media")), None
+    )
+    if latest_bot_with_media:
+        media = latest_bot_with_media["media"]
+        mtype = media.get("type")
+        if mtype == "image" and media.get("path") and os.path.exists(media["path"]):
+            st.image(media["path"], caption=media.get("desc", ""), use_container_width=True)
+        elif mtype == "audio" and media.get("path") and os.path.exists(media["path"]):
+            st.audio(media["path"], format="audio/mp3")
+        elif mtype == "video" and media.get("videos"):
+            for v in media["videos"][:2]:
+                if v.get("video_id"):
+                    st.video(v["url"])
+                    st.caption(f"🎥 {v['title']}")
+                else:
+                    st.markdown(f"🔗 [{v['title']}]({v['url']})")
+
+
+# ════════════════════════════════════════════════════════
 #                    MAIN ROUTER
-# ═══════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════
 
 def main():
     inject_css()
@@ -1418,7 +1924,7 @@ def main():
     # Sidebar navigation
     with st.sidebar:
         st.markdown("## 🧠 LearnSphere")
-        st.caption("AI-Powered ML Tutor")
+        st.caption("AI-Powered Learning Tutor")
 
         # XP & Level
         level_name, level_min, level_max = get_user_level()
@@ -1473,12 +1979,20 @@ def main():
                 st.markdown(f"- {t}")
 
         st.divider()
-        if st.button("🏠 Start Over", use_container_width=True):
-            for key in list(st.session_state.keys()):
-                del st.session_state[key]
+
+        # Concept Flow shortcut in sidebar
+        if st.button("🔀 Concept Flow Visualizer", use_container_width=True):
+            navigate("concept_flow")
             st.rerun()
 
-    # Route to current page
+        if st.button("🏠 Start Over", use_container_width=True):
+            gg_history = st.session_state.gg_messages[:]
+            for key in list(st.session_state.keys()):
+                del st.session_state[key]
+            st.session_state.gg_messages = gg_history
+            st.rerun()
+
+    # ─────────────── PAGE ROUTING WITH GYANGURU PANEL ───────────────
     page = st.session_state.page
     pages = {
         "welcome": page_welcome,
@@ -1491,51 +2005,35 @@ def main():
         "revision": page_revision,
         "flashcards": page_flashcards,
         "projects": page_projects,
+        "concept_flow": page_concept_flow,
     }
-
     page_fn = pages.get(page, page_welcome)
-    page_fn()
 
-    # ─────────────── FLOATING DOUBT CHAT ───────────────
-    st.markdown("""
-    <div onclick="document.querySelector('[data-testid=stExpander]') && document.querySelector('[data-testid=stExpander] button').click()" style="cursor:pointer;">
-    </div>
-    """, unsafe_allow_html=True)
+    # Only show GyanGuru panel after level is selected
+    show_gg = bool(st.session_state.level)
 
-    st.divider()
-    with st.expander("💬 Ask a Doubt — AI Tutor Chat", expanded=st.session_state.show_doubt_chat):
-        # Display chat history
-        for msg in st.session_state.chat_messages:
-            if msg["role"] == "user":
-                st.markdown(f"""
-                <div class="chat-message-user">{msg["content"]}</div>
-                """, unsafe_allow_html=True)
-            else:
-                st.markdown(msg["content"])
-
-        # Chat input
-        doubt = st.text_input("Type your ML doubt here...", key="doubt_input", placeholder="e.g. What is the difference between bias and variance?")
-        col1, col2 = st.columns([1, 4])
-        with col1:
-            ask_btn = st.button("🚀 Ask", use_container_width=True)
-        with col2:
-            if st.button("🗑️ Clear Chat", use_container_width=True):
-                st.session_state.chat_messages = []
+    if show_gg:
+        # ── Toggle button row (always visible after level select) ──
+        toggle_col1, toggle_col2 = st.columns([6, 1])
+        with toggle_col2:
+            btn_label = "✕ Close" if st.session_state.gg_open else "🧠 GyanGuru"
+            btn_type = "secondary" if st.session_state.gg_open else "primary"
+            if st.button(btn_label, key="gg_toggle", use_container_width=True, type=btn_type):
+                st.session_state.gg_open = not st.session_state.gg_open
                 st.rerun()
 
-        if ask_btn and doubt:
-            st.session_state.show_doubt_chat = True
-            st.session_state.chat_messages.append({"role": "user", "content": doubt})
-
-            with st.spinner("🤔 Thinking..."):
-                from utils.genai_utils import answer_doubt
-                answer = answer_doubt(
-                    doubt,
-                    context_topic=st.session_state.selected_topic_title,
-                    level=st.session_state.level,
-                )
-                st.session_state.chat_messages.append({"role": "assistant", "content": answer})
-            st.rerun()
+    if show_gg and st.session_state.gg_open:
+        # ── Split layout: page content + GyanGuru side panel ──
+        content_col, gyan_col = st.columns([3, 2])
+        with content_col:
+            page_fn()
+        with gyan_col:
+            st.markdown('<div class="gg-side-panel">', unsafe_allow_html=True)
+            render_gyanguru_panel()
+            st.markdown('</div>', unsafe_allow_html=True)
+    else:
+        # ── Full-width page content ──
+        page_fn()
 
 
 if __name__ == "__main__":

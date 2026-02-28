@@ -357,27 +357,189 @@ Make projects practical, portfolio-worthy, and progressively challenging.
     return _ask_llm(prompt)
 
 
-# ─────────────────────────── DOUBT CLEARING ───────────────────────────
+# ─────────────────────────── DOUBT CLEARING (legacy) ───────────────────────────
 
 def answer_doubt(question, context_topic=None, level=None):
-    """Answer a student's doubt about ML."""
+    """Answer a student's doubt about ML (legacy wrapper)."""
+    return answer_ml_chatbot(question, level=level, context_topic=context_topic)["text"]
+
+
+# ─────────────────────────── GYANGURU CHATBOT ───────────────────────────
+
+def detect_level_from_question(question):
+    """
+    Auto-detect user knowledge level from the phrasing of their question.
+    Returns 'Beginner', 'Intermediate', or 'Advanced'.
+    """
+    prompt = f"""Analyze the following question and classify the asker's knowledge level.
+Return ONLY one word: Beginner, Intermediate, or Advanced.
+
+Question: "{question}"
+
+Rules:
+- Beginner: asks about basic definitions, confused terminology, simple concepts
+- Intermediate: uses correct terminology, asks about implementation or deeper understanding
+- Advanced: asks about research-level concepts, mathematical depth, optimization details
+
+Return ONLY one word."""
+    raw = _ask_llm(prompt).strip()
+    for lvl in ["Advanced", "Intermediate", "Beginner"]:
+        if lvl.lower() in raw.lower():
+            return lvl
+    return "Beginner"
+
+
+def answer_ml_chatbot(question, level=None, context_topic=None, chat_history=None):
+    """
+    GyanGuru — Level-adaptive general-purpose chatbot response.
+    Can answer any academic, educational, or general knowledge question.
+    Refuses offensive / harmful / hateful content.
+    Returns dict: {"text": str, "suggestions": list[str]}
+    """
+    if not level:
+        level = detect_level_from_question(question)
+
+    # Level-specific personality configs
+    level_configs = {
+        "Beginner": {
+            "style": "Use very simple language, real-world analogies (like cooking, sports, everyday objects), avoid equations, use emojis to make it fun. Break everything into tiny steps.",
+            "depth": "Focus on intuition and fundamentals. Keep it accessible.",
+            "tone": "warm, encouraging, patient, like a friendly elder sibling"
+        },
+        "Intermediate": {
+            "style": "Use correct terminology but explain new terms. Include brief code snippets when relevant. Introduce key formulas with plain-English explanation.",
+            "depth": "Cover the how and why. Include pros/cons and common pitfalls.",
+            "tone": "professional, like a knowledgeable senior colleague"
+        },
+        "Advanced": {
+            "style": "Be technical and precise. Use mathematical notation if relevant. Reference seminal sources if applicable. Show implementation-level details.",
+            "depth": "Go deep — optimizations, edge cases, theoretical guarantees, trade-offs.",
+            "tone": "like a research peer, concise and precise"
+        }
+    }
+    cfg = level_configs.get(level, level_configs["Beginner"])
+
     context = ""
     if context_topic:
         context = f"The student is currently learning about **{context_topic}**. "
-    if level:
-        context += f"They are a **{level}** level learner. "
 
-    prompt = f"""{context}You are a friendly, expert ML tutor helping a student clear their doubt.
+    # Build conversation history string (last 6 turns)
+    history_str = ""
+    if chat_history:
+        for turn in chat_history[-6:]:
+            role = "Student" if turn["role"] == "user" else "GyanGuru"
+            content = turn.get("content", "")
+            if content:
+                history_str += f"\n{role}: {content}"
 
-Student's question: {question}
+    prompt = f"""You are **GyanGuru**, an expert, empathetic AI tutor who can help students with ANY subject or general knowledge question — science, mathematics, programming, Machine Learning, history, geography, languages, arts, technology, health, career advice, and more.
+Your personality is: {cfg['tone']}.
+{context}
+Student's knowledge level: **{level}**
 
-Provide a clear, concise answer in Markdown:
-- Use simple language appropriate to their level
-- Include a quick example or analogy if helpful
-- Keep it focused and to the point (not too long)
-- If the question is about code, include a short code snippet
-"""
-    return _ask_llm(prompt)
+Instructions:
+- {cfg['style']}
+- {cfg['depth']}
+- Structure your answer clearly in Markdown.
+- You can answer ANY educational, academic, or general knowledge question.
+- SAFETY RULES (NON-NEGOTIABLE):
+  * NEVER generate offensive, hateful, discriminatory, violent, sexually explicit, or harmful content.
+  * If a question asks for something harmful, illegal, or offensive, politely decline and redirect to something constructive.
+  * Always be respectful, inclusive, and positive.
+- End with 2-3 short **Follow-up suggestions** the student might want to ask next, as a JSON list at the very end.
+
+Format EXACTLY like this (no deviation):
+[YOUR ANSWER IN MARKDOWN]
+
+---SUGGESTIONS---
+["suggestion 1", "suggestion 2", "suggestion 3"]
+
+{'Previous conversation:' + history_str if history_str else ''}
+
+Student's current question: {question}"""
+
+
+    raw = _ask_llm(prompt, model="llama3.1-8b")
+
+    # Parse suggestions
+    suggestions = []
+    text = raw
+    if "---SUGGESTIONS---" in raw:
+        parts = raw.split("---SUGGESTIONS---", 1)
+        text = parts[0].strip()
+        try:
+            sug_raw = parts[1].strip()
+            match = re.search(r'\[.*?\]', sug_raw, re.DOTALL)
+            if match:
+                suggestions = json.loads(match.group())
+        except Exception:
+            suggestions = []
+
+    return {"text": text, "suggestions": suggestions, "level_used": level}
+
+
+# ─────────────────────────── CONCEPT FLOW VISUALIZATION ───────────────────────────
+
+def generate_concept_flow(topic, level="Beginner"):
+    """
+    Generate a rich concept flow/mind-map visualization for an ML topic.
+    Returns markdown with ASCII art flow diagram, concept relationships, and step-by-step pipeline.
+    """
+    prompt = f"""You are GyanGuru, an expert ML educator creating a CONCEPT FLOW VISUALIZATION for **"{topic}"** targeted at a **{level}** learner.
+
+Create the following in well-formatted Markdown:
+
+## 🔀 Concept Flow Map
+Draw a top-to-bottom ASCII flow diagram showing:
+- Input → Preprocessing → Model → Output pipeline
+- Key decision points as diamonds: ◆
+- Processes as boxes: ┌──┐
+- Arrows: → ↓ ↑ ←
+Make it detailed and well-labeled.
+
+## 🧠 Knowledge Graph
+Show how concepts CONNECT to each other:
+```
+[Concept A] ──enables──▶ [Concept B]
+     │                        │
+  requires                 leads to
+     ▼                        ▼
+[Concept C] ◀──related── [Concept D]
+```
+Include at least 6 related concepts and their relationships.
+
+## 📋 Step-by-Step Pipeline
+Numbered steps showing the complete workflow:
+1. Step → What happens → Why it matters
+2. Step → What happens → Why it matters
+...(at least 6 steps)
+
+## 🌳 Prerequisites Tree
+What you need to know BEFORE this topic:
+```
+{topic}
+├── Requires: [prerequisite A]
+│   └── Which needs: [deeper prerequisite]
+├── Requires: [prerequisite B]
+└── Leads to: [next topic]
+```
+
+## 🔑 Key Parameters & Relationships
+Table showing key parameters, their effect, and typical values:
+| Parameter | Effect | Typical Range | Tip |
+|---|---|---|---|
+
+Make everything extremely visual, well-formatted, and easy to follow for a {level} learner."""
+    return _ask_llm(prompt, model="llama-3.3-70b")
+
+
+def generate_concept_flow_for_chat(question, level="Beginner"):
+    """Generate a concept flow specifically triggered from the GyanGuru chatbot."""
+    # Extract the topic from the question
+    topic_prompt = f'Extract the main ML concept/topic from this question in 3 words or less: "{question}". Return ONLY the topic name.'
+    topic = _ask_llm(topic_prompt).strip().strip('"').strip("'")
+    flow = generate_concept_flow(topic, level)
+    return topic, flow
 
 
 # ─────────────────────────── FLASHCARDS ───────────────────────────
