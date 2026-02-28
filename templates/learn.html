@@ -21,23 +21,26 @@
                 <div class="avatar">{{ user.display_name[0] | upper }}</div>
                 <div>
                     <div class="user-name">{{ user.display_name }}</div>
-                    <!-- Removed XP, Badges, and Stats per requirements -->
+                </div>
+            </div>
+        </div>
+        <!-- Removed XP, Badges, and Stats per requirements -->
 
-                    <div class="sidebar-nav">
-                        <div class="nav-section-title">Navigation</div>
-                        <a href="/dashboard" class="nav-item">
-                            <span class="nav-icon">🏠</span> Dashboard
-                        </a>
-                        <div class="nav-item active" onclick="goToSection('level')">
-                            <span class="nav-icon">🚀</span> Learning
-                        </div>
+        <div class="sidebar-nav">
+            <div class="nav-section-title">Navigation</div>
+            <a href="/dashboard" class="nav-item">
+                <span class="nav-icon">🏠</span> Dashboard
+            </a>
+            <div class="nav-item active" onclick="goToSection('level')">
+                <span class="nav-icon">🚀</span> Learning
+            </div>
 
-                        <div id="sidebarRoadmap">
-                            <!-- Dynamically populated -->
-                        </div>
-                    </div>
+            <div id="sidebarRoadmap">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
 
-                    <!-- Footer Removed -->
+        <!-- Footer Removed -->
     </nav>
 
     <!-- ═══ Main Content ═══ -->
@@ -268,11 +271,37 @@
             </div>
         </div>
 
-        <!-- Chat Toggle FAB -->
-        <button class="btn btn-primary" id="chatFab" onclick="toggleChat()"
+        <!-- Chat Toggle FAB with Bouncing Arrow -->
+        <div id="chatIndicator"
+            style="position:fixed;bottom:90px;right:40px;font-size:2rem;z-index:50;animation:bounce 2s infinite;">
+            ⬇️
+        </div>
+        <button class="btn btn-primary" id="chatFab"
+            onclick="toggleChat(); document.getElementById('chatIndicator').style.display='none';"
             style="position:fixed;bottom:30px;right:30px;border-radius:50%;width:56px;height:56px;padding:0;font-size:1.5rem;box-shadow:0 4px 20px rgba(79,195,247,0.4);z-index:50;">
             🧠
         </button>
+
+        <style>
+            @keyframes bounce {
+
+                0%,
+                20%,
+                50%,
+                80%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                40% {
+                    transform: translateY(-15px);
+                }
+
+                60% {
+                    transform: translateY(-7px);
+                }
+            }
+        </style>
 
     </main>
 </div>

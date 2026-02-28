@@ -290,7 +290,7 @@ Provide a detailed evaluation in valid JSON (no markdown, no code fences):
 
 Be fair but encouraging. Give partial credit for partially correct answers.
 """
-    raw = _ask_llm(prompt)
+    raw = _ask_llm(prompt, model="llama3.1-8b")
     raw = re.sub(r"```(?:json)?\s*", "", raw).strip().rstrip("`")
     try:
         return json.loads(raw)
@@ -561,7 +561,7 @@ Example:
   {{"front": "Define learning rate", "back": "A hyperparameter controlling weight updates during training.", "emoji": "⚡"}}
 ]
 """
-    raw = _ask_llm(prompt)
+    raw = _ask_llm(prompt, model="llama3.1-8b")
     raw = re.sub(r"```(?:json)?\s*", "", raw).strip().rstrip("`")
     try:
         return json.loads(raw)

@@ -56,34 +56,37 @@
                 <div class="avatar" id="userAvatar">{{ user.display_name[0] | upper }}</div>
                 <div>
                     <div class="user-name" id="userName">{{ user.display_name }}</div>
-                    <!-- Removed XP, Badges, and Stats per requirements -->
+                </div>
+            </div>
+        </div>
+        <!-- Removed XP, Badges, and Stats per requirements -->
 
-                    <!-- Navigation -->
-                    <div class="sidebar-nav">
-                        <div class="nav-section-title">Navigation</div>
-                        <a href="/dashboard" class="nav-item active">
-                            <span class="nav-icon">🏠</span> Dashboard
-                        </a>
-                        <a href="/learn" class="nav-item">
-                            <span class="nav-icon">🚀</span> Start Learning
-                        </a>
+        <!-- Navigation -->
+        <div class="sidebar-nav">
+            <div class="nav-section-title">Navigation</div>
+            <a href="/dashboard" class="nav-item active">
+                <span class="nav-icon">🏠</span> Dashboard
+            </a>
+            <a href="/learn" class="nav-item">
+                <span class="nav-icon">🚀</span> Start Learning
+            </a>
 
-                        {% if progress and progress.current_roadmap %}
-                        <div class="nav-section-title">Course Roadmap</div>
-                        {% for topic in progress.current_roadmap %}
-                        <div class="nav-item {% if topic.title in progress.topics_completed %}completed{% endif %}"
-                            onclick="window.location='/learn?topic={{ topic.id }}'">
-                            <span class="nav-icon">{{ topic.icon }}</span>
-                            <span>{{ topic.title[:22] }}{% if topic.title|length > 22 %}…{% endif %}</span>
-                            {% if topic.title in progress.topics_completed %}
-                            <span class="nav-badge" style="background: var(--accent-green); color: #0a0a1a;">✓</span>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
+            {% if progress and progress.current_roadmap %}
+            <div class="nav-section-title">Course Roadmap</div>
+            {% for topic in progress.current_roadmap %}
+            <div class="nav-item {% if topic.title in progress.topics_completed %}completed{% endif %}"
+                onclick="window.location='/learn?topic={{ topic.id }}'">
+                <span class="nav-icon">{{ topic.icon }}</span>
+                <span>{{ topic.title[:22] }}{% if topic.title|length > 22 %}…{% endif %}</span>
+                {% if topic.title in progress.topics_completed %}
+                <span class="nav-badge" style="background: var(--accent-green); color: #0a0a1a;">✓</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
 
-                    <!-- Footer Removed -->
+        <!-- Footer Removed -->
     </nav>
 
     <!-- ═══ Main Content ═══ -->

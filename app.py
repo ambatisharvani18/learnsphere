@@ -285,6 +285,16 @@ def api_generate_quiz():
     return jsonify({"quiz": quiz})
 
 
+@app.route("/api/flashcards", methods=["POST"])
+@login_required
+def api_generate_flashcards():
+    data = request.get_json()
+    topic = data.get("topic", "")
+    level = data.get("level", "Beginner")
+    cards = generate_flashcards(topic, level)
+    return jsonify({"cards": cards})
+
+
 @app.route("/api/evaluate", methods=["POST"])
 @login_required
 def api_evaluate():
